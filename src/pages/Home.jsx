@@ -8,12 +8,14 @@ const Home = () => {
   const [movies, setMovies] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1)
 
   useEffect(() => {
     const loadPopularMovie = async () => {
       try {
-        const popularMovies = await getPopularMovies();
-        setMovies(popularMovies);
+        const popularMovies = await getPopularMovies(page);
+        // setMovies([...movies, ...popularMovies]);
+        setMovies((prev) => [...prev, ...popularMovies])
       } catch (err) {
         setError("failed to load movies...");
         console.log(err);
@@ -22,7 +24,7 @@ const Home = () => {
       }
     };
     loadPopularMovie();
-  }, []);
+  }, [page]);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -72,6 +74,7 @@ const Home = () => {
             )}
         </div>
       )}
+      {!loading && <button onClick={() => setPage(prev => prev + 1)} >Load More</button>}
     </div>
   );
 };
