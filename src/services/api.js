@@ -4,7 +4,7 @@ const BASE_URL = "https://api.themoviedb.org/3";
 export const getPopularMovies = async (page = 1) => {
   const response = await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&page=${page}`);
   const data = await response.json();
-  return data.results;
+  return data.results.filter(movie => !movie.adult);
 };
 
 export const searchMovies = async (query) => {
